@@ -1,6 +1,6 @@
 {
   "name": "Dynamic Bookmark",
-  "description": "",
+  "description": "This Chrom extension is a tool that periodically or manually updates and manages date-based bookmark urls.",
   "author":"Yong",
   "version": "0.1",
   "manifest_version": 3,
