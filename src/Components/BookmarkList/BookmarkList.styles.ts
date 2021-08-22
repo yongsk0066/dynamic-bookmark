@@ -4,8 +4,7 @@ export const Ul = styled.ul`
     display: flex;
     flex-direction: column;
     margin-top: 1rem;
-    padding: 8px;
-    gap: 8px;
+    gap: 2px;
 `;
 
 export const Li = styled.li`
@@ -14,7 +13,13 @@ export const Li = styled.li`
     text-overflow: ellipsis;
     white-space: nowrap;
     color: white;
+    padding: 8px;
     :hover {
         cursor: pointer;
+        background-color: #222222;
     }
+`;
+
+export const RegResult = styled.div`
+    color: white;
 `;

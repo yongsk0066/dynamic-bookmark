@@ -6,4 +6,7 @@ export const Container = styled.div`
     padding: 16px;
     width: 400px;
     background-color: #282c2f;
+    span {
+        color: white;
+    }
 `;
