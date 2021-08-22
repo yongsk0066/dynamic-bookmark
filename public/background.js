@@ -4,6 +4,8 @@ chrome.runtime.onInstalled.addListener(() => {
     return;
 });
 
+chrome.alarms.create("updateBookmark", { periodInMinutes: 60 * 24 });
+
 // chrome.storage.sync.get(["targetBookmark"], (r) => {
 //     console.log(r);
 // });

@@ -1,14 +1,15 @@
+// get monday and friday
 export const getWeek = () => {
-    const today = new Date();
-    const currentDate = new Date(today.setDate(today.getDate() - 1));
+    const currentDate = new Date();
 
     const firstDay = new Date(
         currentDate.setDate(currentDate.getDate() - currentDate.getDay() + 1)
     );
-    const lastDay = new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay() + 7));
+    const lastDay = new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay() + 5));
     return { firstDay, lastDay };
 };
 
+// get url format string
 export const formattedDate = ({ firstDay, lastDay }: { firstDay: Date; lastDay: Date }) => {
     return (
         firstDay.toLocaleDateString().replaceAll(".", ".+").slice(0, -2) +
@@ -18,5 +19,5 @@ export const formattedDate = ({ firstDay, lastDay }: { firstDay: Date; lastDay: 
 };
 
 export const formattedWeekDate = () => {
-    return formattedDate(getWeek());
+    return formattedDate(getWeek()).replaceAll(" ", "");
 };

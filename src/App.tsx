@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import SearchBar from "./Components/SearchBar";
 import Layout from "./Components/Layout";
 import useInput from "./Hooks/useInput";
 import BookmarkList from "./Components/BookmarkList";
 import { Bookmark } from "./types/bookmark.types";
 import Selected from "./Components/Selected";
-import { dateRegExp } from "./utils/regex";
-import { RegResult } from "./Components/BookmarkList/BookmarkList.styles";
+import { dateRegExp, updateUrl } from "./utils/regex";
+import { RegResult, Button } from "./Components/BookmarkList/BookmarkList.styles";
 import { formattedWeekDate } from "./utils/date";
 
 function App() {
@@ -15,13 +15,27 @@ function App() {
     const [savedBookmark, setSavedBookmark] = useState<Bookmark>();
     const [validate, setValidate] = useState<string>("");
 
+    const handleClick = useCallback(async () => {
+        const url = savedBookmark?.url as string;
+        const id = savedBookmark?.id as string;
+        const testResult = dateRegExp.test(url);
+        if (testResult) {
+            const newUrl = updateUrl(url, formattedWeekDate());
+            const check = await chrome.bookmarks.update(id, {
+                url: newUrl,
+            });
+            console.log(check);
+        } else {
+            setValidate("업데이트 할 수 없습니다.");
+        }
+    }, [savedBookmark?.id, savedBookmark?.url]);
+
     useEffect(() => {
         const searchBookmark = async () => {
             // for run on local without extension api
             if (chrome.bookmarks?.search) {
                 const result = await chrome.bookmarks.search(currentBookmark.value);
                 setBookmarks(result || []);
-                console.log(result);
             }
         };
         searchBookmark();
@@ -30,13 +44,13 @@ function App() {
     useEffect(() => {
         //first time
         if (chrome?.storage) {
+            // get bookmark from storage
             chrome.storage.sync.get(["targetBookmark"], (result) => {
                 const data = result?.targetBookmark;
-                console.log(data);
                 setSavedBookmark(data);
             });
+            //update target bookmark
             chrome.storage.onChanged.addListener(({ targetBookmark }) => {
-                console.log(targetBookmark.newValue.url);
                 const result = dateRegExp.test(targetBookmark.newValue.url);
                 if (!result) {
                     setValidate("맞지 않는 url입니다.");
@@ -45,15 +59,19 @@ function App() {
                 }
                 setSavedBookmark(targetBookmark.newValue);
             });
+            // alarm listener
+            chrome.alarms.onAlarm.addListener((r) => {
+                handleClick();
+            });
         }
-    }, []);
+    }, [handleClick]);
 
     return (
         <>
             <Layout>
                 <Selected content={savedBookmark} />
-                <span>{formattedWeekDate()}</span>
-                <RegResult>{validate}</RegResult>
+                {validate && <RegResult>{validate}</RegResult>}
+                <Button onClick={handleClick}>수동 업데이트</Button>
                 <SearchBar currentBookmark={currentBookmark} />
                 <BookmarkList bookmarks={bookmarks} />
             </Layout>

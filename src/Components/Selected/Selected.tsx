@@ -11,7 +11,8 @@ const Selected = ({ content }: { content: Bookmark | undefined }) => {
             <Container>
                 <Ticker>
                     <Item onClick={() => handleCreateTab(content?.url)}>
-                        {content?.title || "⬇️ 대상을 검색해, 선택해주세요 ⬇️"}
+                        {content?.title + " : " + content?.url ||
+                            "⬇️ 대상을 검색해, 선택해주세요 ⬇️"}
                     </Item>
                 </Ticker>
             </Container>

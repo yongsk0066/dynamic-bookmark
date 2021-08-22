@@ -22,4 +22,21 @@ export const Li = styled.li`
 
 export const RegResult = styled.div`
     color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    padding: 8px;
+    margin-bottom: 8px;
+`;
+
+export const Button = styled.button`
+    margin-bottom: 8px;
+    border: none;
+    padding: 8px;
+    background-color: #4285f4;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    cursor: pointer;
 `;
