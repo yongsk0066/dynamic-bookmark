@@ -13,7 +13,7 @@ export const getWeek = () => {
 export const formattedDate = ({ firstDay, lastDay }: { firstDay: Date; lastDay: Date }) => {
     return (
         firstDay.toLocaleDateString().replaceAll(".", ".+").slice(0, -2) +
-        "+~+" +
+        "+" +
         lastDay.toLocaleDateString().replaceAll(".", ".+").slice(0, -2)
     );
 };
